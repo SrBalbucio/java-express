@@ -7,10 +7,10 @@ import express.Express;
 import express.filter.Filter;
 import express.http.Cookie;
 import express.utils.Utils;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -92,6 +92,40 @@ public class Request {
      */
     public InputStream getBody() {
         return body;
+    }
+
+    public String bodyAsString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(body))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+                stringBuilder.append(System.lineSeparator());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * @return The request body as JSON
+     */
+    public JSONObject bodyAsJson() {
+        if (getContentType() != "application/json") {
+            return null;
+        }
+        return new JSONObject(new JSONTokener(body));
+    }
+
+    /**
+     *
+     * @param clazz
+     * @return The request body as Object from Json
+     * @param <T>
+     */
+    public <T> T bodyAsJsonObject(Class<T> clazz){
+        return express.getGson().fromJson(bodyAsString(), clazz);
     }
 
     /**

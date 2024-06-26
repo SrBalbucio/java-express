@@ -1,5 +1,6 @@
 package express;
 
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
@@ -20,6 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Simon Reinisch
  * Core class of java-express
@@ -28,6 +33,9 @@ public class Express implements Router {
 
     private final ConcurrentHashMap<String, HttpRequestHandler> parameterListener;
     private final ConcurrentHashMap<Object, Object> locals;
+    @Getter
+    @Setter
+    private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().serializeNulls().create();
 
     private final ArrayList<FilterWorker> worker;
     private final FilterLayerHandler handler;

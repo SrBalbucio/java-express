@@ -15,6 +15,8 @@
   </a>
 </p>
 
+> This is a fork from a very interesting project that I often use in some of my projects. That's why I decided to make a fork that would work for me and that I could add some features to. So don't expect frequent updates or addition of features at the request of third parties.
+
 # Getting Started
 
 ```java

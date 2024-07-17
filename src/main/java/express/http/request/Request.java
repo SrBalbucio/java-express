@@ -92,6 +92,22 @@ public class Request {
         this.cookies = RequestUtils.parseCookies(headers);
     }
 
+    public String asSharedString(String key){
+        return (String) sharedValues.get(key);
+    }
+
+    public int asSharedInt(String key){
+        return (int) sharedValues.get(key);
+    }
+
+    public JSONObject asSharedJson(String key){
+        return (JSONObject) sharedValues.get(key);
+    }
+
+    public <T> T asShared(String key, Class<T> type){
+        return (T) sharedValues.computeIfAbsent(key, type::cast);
+    }
+
     /**
      * @return The request body as InputStream
      */

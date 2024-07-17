@@ -6,7 +6,7 @@
 
     <groupId>express</groupId>
     <artifactId>java-express</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 
     <name>java-express</name>
     <description>Simple and fast HTTP-Framework with the touch of expressjs</description>

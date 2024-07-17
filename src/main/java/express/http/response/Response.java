@@ -167,7 +167,7 @@ public class Response {
      * @param json
      */
     public void sendJson(JSONObject json) {
-        setContentType("application/json");
+        setContentType(MediaType._json);
         send(json.toString());
     }
 

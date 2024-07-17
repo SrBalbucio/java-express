@@ -39,7 +39,7 @@ public class FilterLayer<T extends HttpRequestHandler> {
 
         while (!res.isClosed() && iter.hasNext()) {
             try {
-                request.handle(req, res);
+                iter.next().handle(req, res);
             } catch (Exception e){
                 req.getApp().getExceptionHandlers().forEach(h -> h.handleException(e));
             }

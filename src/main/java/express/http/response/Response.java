@@ -6,6 +6,7 @@ import express.http.Cookie;
 import express.utils.MediaType;
 import express.utils.Status;
 import express.utils.Utils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,6 +103,18 @@ public class Response {
         this.status = status.getCode();
         return this;
     }
+    /**
+     * Set the response-status.
+     * Default is 200 (ok).
+     *
+     * @param status The response status.
+     * @return This Response instance.
+     */
+    public Response setStatus(int status) {
+        if (isClosed()) return this;
+        this.status = status;
+        return this;
+    }
 
     /**
      * Set the response-status and send the response.
@@ -150,6 +163,15 @@ public class Response {
     }
 
     /**
+     * Send json response
+     * @param json
+     */
+    public void sendJson(JSONObject json) {
+        setContentType("application/json");
+        send(json.toString());
+    }
+
+    /**
      * Send an string as response.
      *
      * @param s The string.
@@ -169,7 +191,7 @@ public class Response {
         try {
             this.body.write(s.getBytes());
         } catch (IOException e) {
-            log.error("Failed to write char sequence to client.",e );
+            log.error("Failed to write char sequence to client.", e);
         }
 
         close();

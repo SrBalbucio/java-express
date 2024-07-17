@@ -7,6 +7,8 @@ import express.Express;
 import express.filter.Filter;
 import express.http.Cookie;
 import express.utils.Utils;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -46,7 +48,10 @@ public class Request {
     private final HashMap<String, Object> middleware;   // Middleware Data
     private final HashMap<String, Cookie> cookies;      // Request cookies
     private final HashMap<String, String> queries;      // URL Query parameters
-    private final HashMap<String, String> formQueries; // Form query parameters (application/x-www-form-urlencoded)
+    private final HashMap<String, String> formQueries;// Form query parameters (application/x-www-form-urlencoded)
+    @Getter
+    @Setter
+    private HashMap<String, Object> sharedValues = new HashMap<>(); // Valores para compartilhar entre os vários filters;
 
     private HashMap<String, String> params;             // URL Params, would be added in ExpressFilterImpl
     private String context;                             // Context which matched

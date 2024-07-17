@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;
+import express.exception.HttpExceptionHandler;
 import express.filter.FilterImpl;
 import express.filter.FilterLayerHandler;
 import express.filter.FilterTask;
@@ -18,6 +19,7 @@ import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -34,6 +36,8 @@ public class Express implements Router {
     private final ConcurrentHashMap<String, HttpRequestHandler> parameterListener;
     private final ConcurrentHashMap<Object, Object> locals;
     @Getter
+    private CopyOnWriteArrayList<HttpExceptionHandler> exceptionHandlers;
+    @Getter
     @Setter
     private final Gson gson = new GsonBuilder().enableComplexMapKeySerialization().serializeNulls().create();
 
@@ -49,6 +53,7 @@ public class Express implements Router {
         // Initialize
         parameterListener = new ConcurrentHashMap<>();
         locals = new ConcurrentHashMap<>();
+        exceptionHandlers = new CopyOnWriteArrayList<>();
 
         worker = new ArrayList<>();
         handler = new FilterLayerHandler(2);
@@ -246,6 +251,11 @@ public class Express implements Router {
 
     public Express patch(String context, HttpRequestHandler request) {
         handler.add(1, new FilterImpl("PATCH", context, request));
+        return this;
+    }
+
+    public Express addExceptionHandler(HttpExceptionHandler handler){
+        this.exceptionHandlers.add(handler);
         return this;
     }
 

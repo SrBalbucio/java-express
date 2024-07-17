@@ -16,5 +16,5 @@ public interface HttpRequestHandler {
      * @param req - The request object
      * @param res - The response object
      */
-    void handle(Request req, Response res);
+    void handle(Request req, Response res) throws Exception;
 }

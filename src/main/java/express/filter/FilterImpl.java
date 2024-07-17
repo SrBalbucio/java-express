@@ -1,5 +1,6 @@
 package express.filter;
 
+import express.Express;
 import express.http.HttpRequestHandler;
 import express.http.request.Request;
 import express.http.response.Response;
@@ -60,6 +61,7 @@ public class FilterImpl implements HttpRequestHandler {
 
     @Override
     public void handle(Request req, Response res) {
+        Express express = req.getApp();
         String requestMethod = req.getMethod();
         String requestPath = req.getURI().getRawPath();
         ConcurrentHashMap<String, HttpRequestHandler> parameterListener = req.getApp().getParameterListener();
@@ -68,7 +70,11 @@ public class FilterImpl implements HttpRequestHandler {
             return;
         } else if (contextAll) {
             req.setContext(context);
-            request.handle(req, res);
+            try {
+                request.handle(req, res);
+            } catch (Exception e){
+                express.getExceptionHandlers().forEach(h -> h.handleException(e));
+            }
             return;
         }
 
@@ -86,7 +92,11 @@ public class FilterImpl implements HttpRequestHandler {
             HttpRequestHandler request = parameterListener.get(s);
 
             if (request != null) {
-                request.handle(req, res);
+                try {
+                    request.handle(req, res);
+                } catch (Exception e){
+                    express.getExceptionHandlers().forEach(h -> h.handleException(e));
+                }
             }
         });
 
@@ -97,7 +107,11 @@ public class FilterImpl implements HttpRequestHandler {
 
         // Handle request
         req.setContext(context);
-        request.handle(req, res);
+        try {
+            request.handle(req, res);
+        } catch (Exception e){
+            express.getExceptionHandlers().forEach(h -> h.handleException(e));
+        }
     }
 
     /**

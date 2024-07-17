@@ -38,7 +38,11 @@ public class FilterLayer<T extends HttpRequestHandler> {
         ListIterator<T> iter = this.filter.listIterator();
 
         while (!res.isClosed() && iter.hasNext()) {
-            iter.next().handle(req, res);
+            try {
+                request.handle(req, res);
+            } catch (Exception e){
+                req.getApp().getExceptionHandlers().forEach(h -> h.handleException(e));
+            }
         }
     }
 }

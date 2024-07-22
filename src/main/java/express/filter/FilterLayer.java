@@ -41,7 +41,7 @@ public class FilterLayer<T extends HttpRequestHandler> {
             try {
                 iter.next().handle(req, res);
             } catch (Exception e){
-                req.getApp().getExceptionHandlers().forEach(h -> h.handleException(e));
+                req.getApp().getExceptionHandlers().forEach(h -> h.handleException(e, req, res));
             }
         }
     }

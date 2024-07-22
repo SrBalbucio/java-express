@@ -73,7 +73,7 @@ public class FilterImpl implements HttpRequestHandler {
             try {
                 request.handle(req, res);
             } catch (Exception e){
-                express.getExceptionHandlers().forEach(h -> h.handleException(e));
+                express.getExceptionHandlers().forEach(h -> h.handleException(e, req, res));
             }
             return;
         }
@@ -95,7 +95,7 @@ public class FilterImpl implements HttpRequestHandler {
                 try {
                     request.handle(req, res);
                 } catch (Exception e){
-                    express.getExceptionHandlers().forEach(h -> h.handleException(e));
+                    express.getExceptionHandlers().forEach(h -> h.handleException(e, req, res));
                 }
             }
         });
@@ -110,7 +110,7 @@ public class FilterImpl implements HttpRequestHandler {
         try {
             request.handle(req, res);
         } catch (Exception e){
-            express.getExceptionHandlers().forEach(h -> h.handleException(e));
+            express.getExceptionHandlers().forEach(h -> h.handleException(e, req, res));
         }
     }
 

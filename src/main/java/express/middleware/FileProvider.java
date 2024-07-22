@@ -124,7 +124,11 @@ public final class FileProvider implements HttpRequestHandler {
 
     private void finish(Path file, Request req, Response res) {
         if (options.getHandler() != null) {
-            options.getHandler().handle(req, res);
+            try {
+                options.getHandler().handle(req, res);
+            } catch (Exception e){
+                req.getApp().getExceptionHandlers().forEach(h -> h.handleException(e, req, res));
+            }
         }
 
         try {

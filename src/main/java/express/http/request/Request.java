@@ -92,19 +92,19 @@ public class Request {
         this.cookies = RequestUtils.parseCookies(headers);
     }
 
-    public String asSharedString(String key){
+    public String asSharedString(String key) {
         return (String) sharedValues.get(key);
     }
 
-    public int asSharedInt(String key){
+    public int asSharedInt(String key) {
         return (int) sharedValues.get(key);
     }
 
-    public JSONObject asSharedJson(String key){
+    public JSONObject asSharedJson(String key) {
         return (JSONObject) sharedValues.get(key);
     }
 
-    public <T> T asShared(String key, Class<T> type){
+    public <T> T asShared(String key, Class<T> type) {
         return (T) sharedValues.computeIfAbsent(key, type::cast);
     }
 
@@ -115,7 +115,7 @@ public class Request {
         return body;
     }
 
-    public String bodyAsString(){
+    public String bodyAsString() {
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(body))) {
             String line;
@@ -133,19 +133,15 @@ public class Request {
      * @return The request body as JSON
      */
     public JSONObject bodyAsJson() {
-        if (getContentType() != "application/json") {
-            return null;
-        }
         return new JSONObject(new JSONTokener(body));
     }
 
     /**
-     *
      * @param clazz
-     * @return The request body as Object from Json
      * @param <T>
+     * @return The request body as Object from Json
      */
-    public <T> T bodyAsJsonObject(Class<T> clazz){
+    public <T> T bodyAsJsonObject(Class<T> clazz) {
         return express.getGson().fromJson(bodyAsString(), clazz);
     }
 
